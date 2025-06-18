@@ -7,7 +7,7 @@ Este site foi criado como uma homenagem romântica, com animações, contador do
 - Animação estilo "Matrix" com declarações de amor
 - Explosões interativas de "te amo" ao toque
 - Contador de tempo desde o início do relacionamento
-- Player oficial do Spotify incorporado com a música favorita
+- Player oficial do Spotify incorporado com que dediquei a ela
 
 ## 📱 Como visualizar
 
@@ -24,3 +24,5 @@ https://<seu-usuario>.github.io/teamo-laninha
 
 Feito para você, Laninha.  
 Te amo hoje e sempre. 💘
+
+kepe kepe
