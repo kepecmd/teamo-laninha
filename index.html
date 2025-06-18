@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Te Amo Laninha</title>
+<style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100%;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: white;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .header {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 18px;
+      z-index: 10;
+    }
+
+    .timer {
+      margin-top: 6px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<canvas id="matrix"></canvas>
+<div class="header">
+<div>Eu te amo desde o momento em que vi seus olhos, Laninha.</div>
+<div class="timer" id="timer"></div>
+</div>
+<script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const fontSize = 20;
+    const columns = Math.floor(canvas.width / (fontSize * 4));
+    const drops = Array(columns).fill(1);
+    const text = 'te amo';
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.font = `${fontSize}px 'Courier New'`;
+
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, '#ffcce6');
+      gradient.addColorStop(1, '#cc0066');
+
+      ctx.fillStyle = gradient;
+
+      for (let i = 0; i < drops.length; i++) {
+        const x = i * fontSize * 4;
+        const y = drops[i] * fontSize;
+
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(drawMatrix, 50);
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    function createExplosion(x, y) {
+      const particles = [];
+      const numParticles = 30;
+
+      for (let i = 0; i < numParticles; i++) {
+        particles.push({
+          x: x,
+          y: y,
+          dx: (Math.random() - 0.5) * 10,
+          dy: (Math.random() - 0.5) * 10,
+          opacity: 1
+        });
+      }
+
+      function animateExplosion() {
+        particles.forEach(p => {
+          p.x += p.dx;
+          p.y += p.dy;
+          p.opacity -= 0.02;
+        });
+
+        ctx.font = `16px 'Courier New'`;
+        particles.forEach(p => {
+          ctx.fillStyle = `rgba(255, 204, 230, ${p.opacity})`;
+          ctx.fillText('te amo', p.x, p.y);
+        });
+
+        if (particles.some(p => p.opacity > 0)) {
+          requestAnimationFrame(animateExplosion);
+        }
+      }
+
+      animateExplosion();
+    }
+
+    canvas.addEventListener('click', (e) => {
+      createExplosion(e.clientX, e.clientY);
+    });
+
+    const timerElement = document.getElementById('timer');
+    const startDate = new Date('2025-06-04T07:12:00Z');
+
+    function updateTimer() {
+      const now = new Date();
+      let diff = Math.floor((now.getTime() - startDate.getTime()) / 1000);
+
+      const years = Math.floor(diff / (365 * 24 * 60 * 60));
+      diff -= years * (365 * 24 * 60 * 60);
+
+      const days = Math.floor(diff / (24 * 60 * 60));
+      diff -= days * (24 * 60 * 60);
+
+      const hours = Math.floor(diff / (60 * 60));
+      diff -= hours * (60 * 60);
+
+      const minutes = Math.floor(diff / 60);
+      const seconds = diff % 60;
+
+      timerElement.innerHTML = `${years} ano(s), ${days} dia(s), ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+  </script>
+
+<style>
+  .spotify-clone-player {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #121212;
+    color: white;
+    border-radius: 50px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    width: 320px;
+    z-index: 20;
+    font-family: sans-serif;
+  }
+
+  .spotify-clone-player .cover {
+    width: 48px;
+    height: 48px;
+    background: url('https://upload.wikimedia.org/wikipedia/en/b/b4/Chinese_Democracy_album_cover.png') center/cover no-repeat;
+    border-radius: 4px;
+    margin-right: 15px;
+  }
+
+  .spotify-clone-player .info {
+    flex: 1;
+  }
+
+  .spotify-clone-player .title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .spotify-clone-player .artist {
+    font-size: 12px;
+    color: #b3b3b3;
+  }
+
+  .spotify-clone-player button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .spotify-clone-player button:hover {
+    color: #1db954;
+  }
+</style>
+<script>
+  const audio = document.getElementById("audio");
+  const button = document.getElementById("play-pause");
+  let playing = false;
+
+  button.addEventListener("click", () => {
+    if (playing) {
+      audio.pause();
+      button.innerHTML = "&#9658;"; // play symbol
+    } else {
+      audio.play();
+      button.innerHTML = "&#10073;&#10073;"; // pause symbol
+    }
+    playing = !playing;
+  });
+</script>
+
+<div class="spotify-embed">
+<iframe allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" frameborder="0" height="80" loading="lazy" src="https://open.spotify.com/embed/track/6Tz0PntUbl0R3kvuN4B9FV?utm_source=generator" style="border-radius:12px" width="100%">
+</iframe>
+</div>
+<style>
+  .spotify-embed {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 400px;
+    z-index: 10;
+  }
+
+  @media (max-width: 400px) {
+    .spotify-embed iframe {
+      height: 80px;
+    }
+  }
+</style>
+</body>
+</html>
